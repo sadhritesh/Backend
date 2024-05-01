@@ -32,4 +32,23 @@ const uploadFileOnCloudinary = async function(localFilePath) {
     }
 }
 
-export default uploadFileOnCloudinary;
+const deletePhotoFromCloudinary = async function(url) {
+    //url = 'http://res.cloudinary.com/sadhcloud/image/upload/v1713862006/ogazqih9chvlgwtea3ee.png'
+    if (!url) {
+        return null
+    }
+    try {
+        const tempArray = url.split("/")
+        const public_id = tempArray[tempArray.length-1].split(".")[0]
+        await cloudinary.uploader.destroy(public_id, () => {
+            console.log("Image deleted from cloudinary with public_id:", public_id)
+        })
+    } catch (error) {
+        console.log("Error occured in deleteing img from cloudinary :", error.message)
+    }
+}
+
+export  {
+    uploadFileOnCloudinary,
+    deletePhotoFromCloudinary
+}
